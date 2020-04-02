@@ -54,21 +54,28 @@ def callback(indata, frames, time, status):
     q.put(indata.copy())
 
 # read file text
-f = open("news.txt", "r")
+f = open("news_thoisu.txt", "r")
 news = f.read()
 parts = news.split(".")
-print(parts[0])
+for p in parts:
+    print(">>>>>>",p,"<<<<<<")
+
+# wait time before record, can skip if want to record continuosly
+print("type 'x' + enter to start recording")
+inp = input('')
+if inp.strip().lower() != 'ok':
+    time.sleep(1)
 
 # record
 i = 0
 for p in parts:
     print("\nPlease read this sentence: \n", p, "\n")
     
-    # wait time before record, can skip if want to record continuosly
-    print("type 'ok' + enter to start recording")
+    # wait time before each record, can skip if want to record continuosly
+    print("type 'x' + enter to start recording")
     inp = input('')
     if inp.strip().lower() != 'ok':
-        time.sleep(2)
+        time.sleep(1)
 
     # start record
     i += 1
@@ -78,7 +85,7 @@ for p in parts:
             # soundfile expects an int, sounddevice provides a float:
             args.samplerate = int(device_info['default_samplerate'])
         args.filename = tempfile.mktemp(prefix='news_record_'+str(i)+'_',
-                                            suffix='_17021346.wav', dir='record')
+                                            suffix='_17021346.wav', dir='soundrec')
 
         # Make sure the file is opened before recording anything:
         with sf.SoundFile(args.filename, mode='x', samplerate=args.samplerate,
